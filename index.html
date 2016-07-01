@@ -2,19 +2,59 @@
 <html ng-app="gemStore">
   <head>
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
   </head>
   <body ng-controller="StoreController as store">
-    <ul class="list-group">
-      <li class="list-group-item" ng-repeat="product in store.products">
+
+    <!--  Products Container  -->
+    <div class="list-group">
+      <!--  Product Container  -->
+      <div class="list-group-item" ng-repeat="product in store.products">
         <h3>
           {{product.name }}
           <em class="pull-right">{{product.price | currency}}</em>
           <img ng-src="{{product.images[0].full}}"/>
         </h3>
-      </li>
-      <!-- <button ng-show="product.canPurchase"> Add to Cart </button> -->
-    </ul>
-    <script type="text/javascript" src="angular.min.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+
+        <!-- Image Gallery  -->
+        <div ng-show="product.images.length">
+        <!-- Fail 1 Message -->
+
+        <div ng-show="product.images">
+          <img class="img img-circle img-thumbnail center-block" ng-src="{{product.images[0]}}" />
+          <ul class="clearfix">
+            <li class="small-image pull-left thumbnail" ng-repeat="image in product.images"> <img ng-src="{{image}}" /> </li>
+          </ul>
+        </div>
+
+        <section ng-controller="PanelController as panel">
+          <ul class="nav nav-pills">
+            <li ng-class="{ active:panel.isSelected(1) }">
+              <a href ng-click="panel.setTab(1)">Description</a>
+            </li>
+            <li ng-class="{ active:panel.isSelected(2) }">
+              <a href ng-click="panel.setTab(2)">Specifications</a>
+            </li>
+            <li ng-class="{ active:panel.isSelected(3) }">
+              <a href ng-click="panel.setTab(3)">Reviews</a>
+            </li>
+          </ul>
+          <div class="panel" ng-show="panel.isSelected(1)">
+            <h4>Description</h4>
+            <p>{{product.description}}</p>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(2)">
+            <h4>Specifications</h4>
+            <blockquote>None Yet</blockquote>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(3)">
+            <h4>Reviews</h4>
+            <blockquote>None Yet</blockquote>
+          </div>
+        </section>
+
+      </div>
+    </div>
   </body>
 </html>
